@@ -1,0 +1,58 @@
+{
+    "layer": "top",
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "height": 20,
+    "modules-center": ["custom/waybar-mpris"],
+    "modules-right": ["battery", "pulseaudio", "backlight", "clock", "tray"],
+    "sway/window": {
+        "max-length": 50
+    },
+    "sway/workspaces": {
+        "all-outputs": true
+    },
+    "battery": {
+        "format": "{capacity}% {icon}",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "clock": {
+        "format-alt": "{:%a, %d. %b  %H:%M}"
+    },
+    "custom/waybar-mpris": {
+        "return-type": "json",
+        "exec": "~/.config/waybar/custom/waybar-mpris --position --autofocus --order SYMBOL:POSITION:ARTIST:TITLE",
+        "max-length": 50,
+        "on-click": "~/.config/waybar/custom/waybar-mpris --send toggle",
+        "on-click-right": "~/.config/waybar/custom/waybar-mpris --send player-next",
+        "escape": true,
+    },
+    "pulseaudio": {
+        "format": "{volume} {icon}",
+        "format-alt": "{volume} {icon}",
+        "format-alt-click": "click-right",
+        "format-muted": "",
+        "format-icons": {
+            "phone": [" ", " ", " ", " "],
+            "default": ["", "", "", ""]
+        },
+        "scroll-step": 10,
+        "on-click": "pavucontrol",
+        "tooltip": false
+    },
+    "backlight": {
+        "format": "{percent}% {icon}",
+        "format-icons": [""],
+        "on-scroll-down": "light -U 5",
+        "on-scroll-up": "light -A 5"
+    },
+    "tray": {
+        "icon-size": 18
+    },
+    "cpu": {
+        "tooltip": false,
+        "format": "{}% "
+    },
+    "memory": {
+        "tooltip": false,
+        "format": "{}% "
+    },
+}
