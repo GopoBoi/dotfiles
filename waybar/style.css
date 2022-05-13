@@ -26,12 +26,10 @@ window#waybar.hidden {
 }
 
 #window {
-    margin-top: 8px;
     padding-left: 8px;
     padding-right: 16px;
 	outline-color: white;
 	outline-style: solid;
-	border-radius: 26px;
 	transition: none;
 	/*
     color: #f8f8f2;
@@ -42,10 +40,6 @@ window#waybar.hidden {
 }
 
 #workspaces {
-	margin-top: 8px;
-	margin-left: 12px;
-	margin-bottom: 0;
-	border-radius: 26px;
 	background: #0D1717;
 	transition: none;
 }
@@ -69,95 +63,64 @@ window#waybar.hidden {
 }
 
 #custom-waybar-mpris {
-	margin-top: 8px;
-	border-radius: 26px;
-	padding-left: 8px;
 	padding-right: 8px;
+	padding-left: 8px;
 	color: #f8f8f2;
 	background: #4F2828;
 	transition: none;
 }
 
 #pulseaudio {
-	margin-top: 8px;
-	margin-left: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
-	margin-bottom: 0;
-	border-radius: 26px;
 	transition: none;
 	color: #fafafa;
 	background: #f04a4a
 }
 
 #cpu {
-	margin-top: 8px;
-	margin-left: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
-	margin-bottom: 0;
-	border-radius: 26px;
 	transition: none;
 	color: #fafafa;
 	background: #f04a4a
 }
 
 #tray {
-	margin-top: 8px;
-	margin-left: 8px;
-	margin-right: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
-	margin-bottom: 0;
-	border-radius: 26px;
 	transition: none;
 	color: #fafafa;
 	background: #f04a4a
 }
 
 #battery {
-	margin-top: 8px;
-	margin-left: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
-	margin-bottom: 0;
-	border-radius: 26px;
 	transition: none;
 	color: #fafafa;
 	background: #f04a4a
 }
 
 #backlight {
-	margin-top: 8px;
-	margin-left: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
-	margin-bottom: 0;
-	border-radius: 26px;
 	transition: none;
 	color: #fafafa;
 	background: #f04a4a
 }
 
 #memory {
-	margin-top: 8px;
-	margin-left: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
-	margin-bottom: 0;
-	border-radius: 26px;
 	transition: none;
 	color: #fafafa;
 	background: #ff6e67;
 }
 
 #clock {
-	margin-top: 8px;
-	margin-left: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
-	margin-bottom: 0;
-	border-radius: 26px;
 	transition: none;
 	color: #fafafa;
 	background: #f04a4a
