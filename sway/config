@@ -53,7 +53,7 @@ bindsym $mod+n exec kitty ranger
 bindsym $mod+x kill
 
 # start rofi (a program launcher)
-bindsym --release Super_L exec rofi -show run
+bindsym $mod+d exec rofi -show run
 
 # change focus
 bindsym $mod+h focus left
