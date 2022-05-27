@@ -30,9 +30,6 @@ set incsearch
 set noswapfile
 set undofile
 set termguicolors
-hi Cursor guifg=green guibg=green
-hi Cursor2 guifg=red guibg=red
-set guicursor=n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor50
 
 call plug#begin('~/.vim/plugged')
 
@@ -53,22 +50,22 @@ call plug#begin('~/.vim/plugged')
  Plug 'hrsh7th/cmp-cmdline'
  Plug 'hrsh7th/nvim-cmp'
  Plug 'mfussenegger/nvim-dap'
+ Plug 'rcarriga/nvim-dap-ui'
  Plug 'nvim-lua/plenary.nvim'
- Plug 'nvim-telescope/telescope.nvim'
- Plug 'morhetz/gruvbox'
  Plug 'jacoborus/tender.vim'
- Plug 'mfussenegger/nvim-dap'
  Plug 'kyazdani42/nvim-web-devicons'
- Plug 'feline-nvim/feline.nvim'
  Plug 'kyazdani42/nvim-tree.lua'
  Plug 'karb94/neoscroll.nvim'
+ Plug 'nvim-lualine/lualine.nvim'
+ Plug 'luisiacc/gruvbox-baby', {'branch': 'main'}
 
 call plug#end()
 
 set completeopt=menu,menuone,noselect
 
-let g:gruvbox_contrast_dark = "hard"
-colorscheme gruvbox
+let g:gruvbox_baby_background_color = "dark"
+let g:gruvbox_baby_telescope_theme = 1
+colorscheme gruvbox-baby
 
 " Keymaps (leader is space)
 
@@ -92,14 +89,20 @@ nnoremap <leader>vrn :lua vim.lsp.buf.rename()<CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
 nnoremap <leader>vn :lua vim.lsp.diagnostic.goto_next()<CR>
 
+nnoremap <leader>b :lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <leader>db :lua require'dap'.continue()<CR>
+nnoremap <leader>dr :lua require'dap'.repl.open()<CR>
+
+highlight Cursor guifg=white guibg=orange
+highlight iCursor guifg=white guibg=red
+set guicursor=n-v-c:block-Cursor
+set guicursor+=i:ver100-iCursor
+set guicursor+=n-v-c:blinkon0
+set guicursor+=i:blinkwait10
 
 lua <<EOF
 
 require'nvim-tree'.setup{}
-
-require('feline').setup({
-    preset = 'gruvbox'
-})
 
 require'lspconfig'.rls.setup{}
 require'lspconfig'.clangd.setup{}
@@ -174,6 +177,50 @@ local cmp = require'cmp'
     })
   })
 
+local dap = require('dap')
+dap.adapters.lldb = {
+  type = 'executable',
+  command = '/usr/bin/lldb-vscode-13', -- adjust as needed, must be absolute path
+  name = 'lldb'
+}
+    dap.configurations.cpp = {
+      {
+        name = 'Launch',
+        type = 'lldb',
+        request = 'launch',
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        stopOnEntry = false,
+        args = {},
+
+        -- 💀
+        -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+        --
+        --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+        --
+        -- Otherwise you might get the following error:
+        --
+        --    Error on launch: Failed to attach to the target process
+        --
+        -- But you should be aware of the implications:
+        -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+        -- runInTerminal = false,
+
+        -- 💀
+        -- If you use `runInTerminal = true` and resize the terminal window,
+        -- lldb-vscode will receive a `SIGWINCH` signal which can cause problems
+        -- To avoid that uncomment the following option
+        -- See https://github.com/mfussenegger/nvim-dap/issues/236#issuecomment-1066306073
+        -- postRunCommands = {'process handle -p true -s false -n false SIGWINCH'}
+      },
+    }
+
+    -- If you want to use this for Rust and C, add something like this:
+
+    dap.configurations.c = dap.configurations.cpp
+    dap.configurations.rust = dap.configurations.cpp
   -- Setup lspconfig.
   local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
@@ -183,4 +230,34 @@ local cmp = require'cmp'
   require('lspconfig')['clangd'].setup {
     capabilities = capabilities
   }
+
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'gruvbox',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {},
+    always_divide_middle = true,
+    globalstatus = false,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  extensions = {}
+}
 EOF
